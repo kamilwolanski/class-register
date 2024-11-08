@@ -9,7 +9,7 @@ class Student extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'name', 'surname', 'class_id']; // Dodajemy class_id do fillable
+    protected $fillable = ['user_id', 'name', 'surname', 'classroom_id']; // Dodajemy class_id do fillable
 
     public function user()
     {
@@ -19,7 +19,7 @@ class Student extends Model
     // Relacja: Uczeń należy do jednej klasy
     public function classroom()
     {
-        return $this->belongsTo(Classroom::class, 'class_id');
+        return $this->belongsTo(Classroom::class, 'classroom_id');
     }
 
     // Inne relacje (np. grades, attendances)

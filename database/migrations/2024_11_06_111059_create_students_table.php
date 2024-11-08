@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('surname');
-            $table->foreignId('class_id')->constrained('classes')->onDelete('cascade'); // Klucz obcy do tabeli 'classes'
+            $table->foreignId('classroom_id')->constrained('classrooms')->onDelete('cascade'); // Klucz obcy do tabeli 'classes'
             $table->timestamps();
         });
     }

@@ -21,4 +21,10 @@ class Teacher extends Model
     {
         return $this->hasMany(Grade::class);
     }
+
+    // Relacja: Nauczyciel może uczyć wiele klas
+    public function classrooms()
+    {
+        return $this->belongsToMany(Classroom::class, 'teacher_classrooms');
+    }
 }
