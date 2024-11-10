@@ -8,18 +8,16 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('teachers', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('surname');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        Schema::table('teachers', function (Blueprint $table) {
             $table->foreignId('subject_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('teachers');
+        Schema::table('teachers', function (Blueprint $table) {
+            $table->dropForeign(['subject_id']);
+            $table->dropColumn('subject_id');
+        });
     }
 };

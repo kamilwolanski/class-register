@@ -22,4 +22,11 @@ class Subject extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    // Relacja: Jeden przedmiot ma wielu nauczycieli
+    public function teachers()
+    {
+        return $this->hasMany(Teacher::class);
+    }
+
 }

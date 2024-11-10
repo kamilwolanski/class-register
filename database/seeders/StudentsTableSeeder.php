@@ -11,18 +11,13 @@ use App\Models\Classroom;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class StudentsTableSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      */
     public function run(): void
     {
-        $this->call(RolesTableSeeder::class);
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         $subject = Subject::create(['name' => 'Matematyka']);
 
         // Tworzenie użytkownika - nauczyciela
@@ -46,7 +41,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Jakub',
             'email' => 'jakub@example.com',
             'password' => Hash::make('Uczen!890795'),
-            'role_id' => 1, // rola 1 to uczen
+            'role_id' => 2, // rola 1 to uczen
         ]);
 
         $classroom = Classroom::create(['name' => '1A']);
