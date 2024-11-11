@@ -19,50 +19,51 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RolesTableSeeder::class);
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        $subject = Subject::create(['name' => 'Matematyka']);
+
+        $subject = Subject::firstOrCreate(['name' => 'Matematyka']);
 
         // Tworzenie użytkownika - nauczyciela
-        $user1 = User::create([
-            'name' => 'Marek',
+        $user1 = User::firstOrCreate([
             'email' => 'marek@example.com',
+        ], [
+            'name' => 'Marek',
             'password' => Hash::make('Nauczyciel!890795'),
             'role_id' => 2, // rola 2 to nauczyciel
         ]);
 
-        // Tworzenie nauczyciela
-        $teacher = Teacher::create([
+        $teacher = Teacher::firstOrCreate([
+            'user_id' => $user1->id,
+        ], [
             'name' => $user1->name,
             'surname' => 'Kowalski',
             'subject_id' => $subject->id,
-            'user_id' => $user1->id,
         ]);
 
-        // Tworzenie użytkownika - ucznia
-        $user2 = User::create([
-            'name' => 'Jakub',
+        $user2 = User::firstOrCreate([
             'email' => 'jakub@example.com',
+        ], [
+            'name' => 'Jakub',
             'password' => Hash::make('Uczen!890795'),
             'role_id' => 1, // rola 1 to uczen
         ]);
 
-        $classroom = Classroom::create(['name' => '1A']);
+        $classroom = Classroom::firstOrCreate(['name' => '1A']);
 
-        $student = Student::create([
+        $student = Student::firstOrCreate([
             'user_id' => $user2->id,
+        ], [
             'name' => $user2->name,
             'surname' => 'Abramowicz',
             'classroom_id' => $classroom->id,
         ]);
 
-        Grade::create([
+        Grade::firstOrCreate([
             'student_id' => $student->id,
             'teacher_id' => $teacher->id,
             'subject_id' => $subject->id,
+        ], [
             'grade' => 4,
         ]);
     }
+
 }

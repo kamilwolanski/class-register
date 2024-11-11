@@ -10,7 +10,7 @@ class GradeController extends Controller
     // Wyświetlanie listy ocen dla danego ucznia
     public function index()
     {
-        $grades = Grade::with('student')->get();
+        $grades = Grade::with(['student', 'teacher', 'subject'])->get();
         return view('grades.index', compact('grades'));
     }
 }
