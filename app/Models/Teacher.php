@@ -25,11 +25,13 @@ class Teacher extends Model
     // Relacja: Nauczyciel może uczyć wiele klas
     public function classrooms()
     {
-        return $this->belongsToMany(Classroom::class, 'teacher_classrooms');
+        return $this->belongsToMany(Classroom::class, 'teacher_classroom');
     }
 
     public function subject()
     {
         return $this->belongsTo(Subject::class);
     }
+
+    
 }

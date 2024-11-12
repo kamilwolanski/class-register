@@ -12,8 +12,22 @@ class ClassroomsController extends Controller
      */
     public function index()
     {
-        $classes = Classroom::with('students')->get();
-        return view('classes.index', compact('classes'));
+        $user = auth()->user();
+
+        if ($user->role->id === 2) {
+            // Jeśli to nauczyciel, wyświetlamy tylko klasy, które nauczyciel uczy
+            $teacher = $user->teacher; // Zakładając, że masz relację teacher() w modelu User
+            $classrooms = $teacher->classrooms; // Pobieramy klasy nauczyciela
+
+            // Eager loading uczniów dla każdej klasy
+            $classroomsWithStudents = $classrooms->load('students'); // Ładujemy uczniów dla tych klas
+        } else {
+            // Jeśli to administrator, pobieramy wszystkie klasy razem z uczniami
+            $classrooms = Classroom::with('students')->get(); // Pobieramy wszystkie klasy z uczniami
+            $classroomsWithStudents = $classrooms; // Zapisujemy klasy w tej zmiennej
+        }
+
+        return view('classes.index', compact('classroomsWithStudents'));
     }
 
     /**
