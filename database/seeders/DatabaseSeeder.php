@@ -82,6 +82,10 @@ class DatabaseSeeder extends Seeder
             $classroom->id => ['created_at' => now(), 'updated_at' => now()],
         ]);
 
+        $teacher->classrooms()->syncWithoutDetaching([
+            $classroom2->id => ['created_at' => now(), 'updated_at' => now()],
+        ]);
+
         $teacher2->classrooms()->syncWithoutDetaching([
             $classroom2->id => ['created_at' => now(), 'updated_at' => now()],
         ]);
@@ -91,7 +95,7 @@ class DatabaseSeeder extends Seeder
             'user_id' => $user2->id,
         ], [
             'name' => $user2->name,
-            'surname' => 'Abramowicz',
+            'surname' => 'Abramowicz', 
             'classroom_id' => $classroom->id,
         ]);
 
@@ -101,6 +105,14 @@ class DatabaseSeeder extends Seeder
             'subject_id' => $subject->id,
         ], [
             'grade' => 4,
+        ]);
+
+        Grade::firstOrCreate([
+            'student_id' => $student->id,
+            'teacher_id' => $teacher2->id,
+            'subject_id' => $subject2->id,
+        ], [
+            'grade' => 2,
         ]);
 
         User::firstOrCreate([
@@ -127,6 +139,14 @@ class DatabaseSeeder extends Seeder
             'subject_id' => $subject2->id,
         ], [
             'grade' => 3,
+        ]);
+
+        Grade::firstOrCreate([
+            'student_id' => $student2->id,
+            'teacher_id' => $teacher->id,
+            'subject_id' => $subject->id,
+        ], [
+            'grade' => 5,
         ]);
         
     }

@@ -1,19 +1,37 @@
-
-<h1>Klasy</h1>
-
 @if (auth()->user()->role->id === 2)
-    <p>Jesteś nauczycielem. Wyświetlamy tylko klasy, które uczysz oraz uczniów tych klas.</p>
-@else
-    <p>Jesteś administratorem. Wyświetlamy wszystkie klasy w systemie z uczniami.</p>
-@endif
+    <h1>Dane nauczyciela</h1>
 
-@foreach ($classroomsWithStudents as $classroom)
-    <h2>Klasa: {{ $classroom->name }}</h2>
-    
-    <h3>Uczniowie:</h3>
+    <p><strong>Imię i nazwisko:</strong> {{ $teacher->name }}</p>
+    <p><strong>Przedmiot:</strong> {{ $subject->name }}</p>
+
+    <h2>Nauczane klasy:</h2>
     <ul>
-        @foreach ($classroom->students as $student)
-            <li>{{ $student->name }} {{ $student->surname }}</li>
+        @foreach ($classrooms as $classroom)
+            <li>{{ $classroom->name }} - <a href="{{ route('classes.show', ['class' => $classroom->id]) }}"
+                    class="btn btn-primary">
+                    Zobacz oceny
+                </a></li>
         @endforeach
     </ul>
-@endforeach
+@endif
+
+
+@if (auth()->user()->role->id === 1)
+
+    <div class="container">
+        <h1>Twoje Oceny</h1>
+
+        @foreach ($groupedGrades as $subjectName => $grades)
+            <div class="subject">
+                <h3>Przedmiot: {{ $subjectName }}</h3>
+                <ul>
+                    @foreach ($grades as $grade)
+                        <li>
+                            Ocena: {{ $grade->grade }} - {{$grade->teacher->name}}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        @endforeach
+    </div>
+@endif
