@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Classroom;
-use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Models\Student;
 
-class ClassroomsController extends Controller
+class GradesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,14 +14,16 @@ class ClassroomsController extends Controller
     {
         $user = auth()->user();
 
+        $student = Student::where('user_id', $user->id)->first();
+        // Pobieramy oceny dla tego studenta wraz z przedmiotami
+        $grades = $student->grades()->with(['subject', 'teacher'])->get();
 
-        // Pobieranie nauczyciela wraz z relacjami
-        $teacher = $user->teacher->load('subject', 'classrooms');
+        // Grupujemy oceny według przedmiotu
+        $groupedGrades = $grades->groupBy(function ($grade) {
+            return $grade->subject->name; // Grupowanie według nazwy przedmiotu
+        });
 
-        $subject = $teacher->subject;
-        $classrooms = $teacher->classrooms;
-
-        return view('classes.index', compact('teacher', 'subject', 'classrooms'));
+        return view('grades.index', compact('groupedGrades'));
     }
 
     /**
@@ -46,22 +47,7 @@ class ClassroomsController extends Controller
      */
     public function show(string $id)
     {
-        $user = auth()->user();
-
-
-        // Pobieranie nauczyciela wraz z relacjami
-        $teacher = $user->teacher->load('classrooms');
-        $subjectId = $teacher->subject_id;
-        $classroom = $teacher->classrooms()->where('classrooms.id', $id)->first();
-        $students = $classroom->students->load('grades');
-        $students->load([
-            'grades' => function ($query) use ($subjectId) {
-                $query->where('subject_id', $subjectId);
-            }
-        ]);
-
-        return view('classes.show', compact('classroom', 'students'));
-
+        //
     }
 
     /**

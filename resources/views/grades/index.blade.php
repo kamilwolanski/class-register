@@ -1,22 +1,16 @@
-<h1>Oceny</h1>
+<div class="container">
+    <h1>Twoje Oceny</h1>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Student</th>
-            <th>Nauczyciel</th>
-            <th>Przedmiot</th>
-            <th>Ocena</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($grades as $grade)
-            <tr>
-                <td>{{ $grade->student->name }} {{ $grade->student->surname }}</td>
-                <td>{{ $grade->teacher->name }} {{ $grade->teacher->surname }}</td>
-                <td>{{ $grade->subject->name }}</td>
-                <td>{{ $grade->grade }}</td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
+    @foreach ($groupedGrades as $subjectName => $grades)
+        <div class="subject">
+            <h3>Przedmiot: {{ $subjectName }}</h3>
+            <ul>
+                @foreach ($grades as $grade)
+                    <li>
+                        Ocena: {{ $grade->grade }} - {{$grade->teacher->name}}
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endforeach
+</div>
