@@ -14,7 +14,6 @@ return new class extends Migration
             $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade');
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
             $table->integer('grade');
-            $table->date('date');
             $table->timestamps();
         });
     }

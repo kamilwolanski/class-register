@@ -7,7 +7,7 @@
             <ul>
                 @foreach ($grades as $grade)
                     <li>
-                        Ocena: {{ $grade->grade }} - {{$grade->teacher->name}}
+                        Ocena: {{ $grade->grade }} - nauczyciel {{$grade->teacher->name}} {{$grade->teacher->surname}}
                     </li>
                 @endforeach
             </ul>

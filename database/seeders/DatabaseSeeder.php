@@ -62,14 +62,12 @@ class DatabaseSeeder extends Seeder
         ], [
             'name' => $user1->name,
             'surname' => 'Kowalski',
-            'subject_id' => $subject->id,
         ]);
         $teacher2 = Teacher::firstOrCreate([
             'user_id' => $user4->id,
         ], [
             'name' => $user4->name,
             'surname' => 'Nogaj',
-            'subject_id' => $subject2->id,
         ]);
 
         
@@ -79,16 +77,17 @@ class DatabaseSeeder extends Seeder
         $classroom2 = Classroom::firstOrCreate(['name' => '2A']);
 
         $teacher->classrooms()->syncWithoutDetaching([
-            $classroom->id => ['created_at' => now(), 'updated_at' => now()],
+            $classroom->id => ['created_at' => now(), 'updated_at' => now(), 'subject_id' => $subject->id],
         ]);
-
+        
         $teacher->classrooms()->syncWithoutDetaching([
-            $classroom2->id => ['created_at' => now(), 'updated_at' => now()],
+            $classroom2->id => ['created_at' => now(), 'updated_at' => now(), 'subject_id' => $subject->id],
         ]);
-
+        
         $teacher2->classrooms()->syncWithoutDetaching([
-            $classroom2->id => ['created_at' => now(), 'updated_at' => now()],
+            $classroom2->id => ['created_at' => now(), 'updated_at' => now(), 'subject_id' => $subject2->id],
         ]);
+        
         
 
         $student = Student::firstOrCreate([

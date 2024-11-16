@@ -1,18 +1,26 @@
-@if (auth()->user()->role->id === 2)
-    <h1>Dane nauczyciela</h1>
-
-    <p><strong>Imię i nazwisko:</strong> {{ $teacher->name }}</p>
-    <p><strong>Przedmiot:</strong> {{ $subject->name }}</p>
-
-    <h2>Nauczane klasy:</h2>
-    <ul>
-        @foreach ($classrooms as $classroom)
-            <li>{{ $classroom->name }} - <a href="{{ route('classes.show', ['class' => $classroom->id]) }}"
-                    class="btn btn-primary">
-                    Zobacz oceny
-                </a></li>
-        @endforeach
-    </ul>
-@endif
-
-
+<div class="container">
+    <h1>Klasy i przedmioty, które uczysz</h1>
+    @if($classroomsWithSubjects->isEmpty())
+        <p>Nie uczysz żadnych klas.</p>
+    @else
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nazwa klasy</th>
+                    <th>Przedmiot</th>
+                    <th>Oceny</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($classroomsWithSubjects as $entry)
+                    <tr>
+                        <td>{{ $entry['classroom']->name }}</td>
+                        <td>{{ $entry['subject']->name }}</td>
+                        <td><a href="{{ route('classes.show_with_subject', ['class' => $entry['classroom']->id, 'subjectId' => $entry['subject']->id]) }}">Oceny</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
+</div>

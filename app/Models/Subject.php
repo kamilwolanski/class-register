@@ -17,6 +17,11 @@ class Subject extends Model
         return $this->hasMany(Grade::class);
     }
 
+    public function teacherClassrooms()
+    {
+        return $this->hasMany(TeacherClassroom::class);
+    }
+
     // Relacja: Przedmiot posiada wiele zapisów obecności
     public function attendances()
     {
@@ -26,7 +31,7 @@ class Subject extends Model
     // Relacja: Jeden przedmiot ma wielu nauczycieli
     public function teachers()
     {
-        return $this->hasMany(Teacher::class);
+        return $this->belongsToMany(Teacher::class);
     }
 
 }

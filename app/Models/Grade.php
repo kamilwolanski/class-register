@@ -9,7 +9,7 @@ class Grade extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['student_id', 'subject_id', 'teacher_id', 'grade', 'date'];
+    protected $fillable = ['student_id', 'subject_id', 'teacher_id', 'grade'];
 
     // Relacja: Ocena należy do ucznia
     public function student()

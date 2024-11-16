@@ -9,7 +9,7 @@ class Teacher extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'name', 'surname', 'subject_id'];
+    protected $fillable = ['user_id', 'name', 'surname'];
 
     public function user()
     {
@@ -22,16 +22,20 @@ class Teacher extends Model
         return $this->hasMany(Grade::class);
     }
 
+    public function teacherClassrooms()
+    {
+        return $this->hasMany(TeacherClassroom::class);
+    }
+
     // Relacja: Nauczyciel może uczyć wiele klas
     public function classrooms()
     {
         return $this->belongsToMany(Classroom::class, 'teacher_classroom');
     }
 
-    public function subject()
+    public function subjects()
     {
-        return $this->belongsTo(Subject::class);
+        return $this->belongsToMany(Subject::class, 'teacher_classroom');
     }
-
     
 }

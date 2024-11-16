@@ -15,14 +15,24 @@ class ClassroomsController extends Controller
     {
         $user = auth()->user();
 
+        $teacher = $user->teacher;
 
-        // Pobieranie nauczyciela wraz z relacjami
-        $teacher = $user->teacher->load('subject', 'classrooms');
+        // Pobierz klasy z przedmiotami
+        $classroomsWithSubjects = $teacher->classrooms()
+            ->withPivot('subject_id') // Pobierz dane z tabeli pośredniej
+            ->with('teachers')
+            ->get()
+            ->map(function ($classroom) use ($teacher) {
+                $subjectId = $classroom->pivot->subject_id;
+                $subject = $teacher->subjects()->find($subjectId);
+                return [
+                    'classroom' => $classroom,
+                    'subject' => $subject,
+                ];
+            });
 
-        $subject = $teacher->subject;
-        $classrooms = $teacher->classrooms;
-
-        return view('classes.index', compact('teacher', 'subject', 'classrooms'));
+        // Przekaż dane do widoku
+        return view('classes.index', compact('classroomsWithSubjects'));
     }
 
     /**
@@ -44,25 +54,33 @@ class ClassroomsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id, string $subjectId)
     {
         $user = auth()->user();
 
-
         // Pobieranie nauczyciela wraz z relacjami
         $teacher = $user->teacher->load('classrooms');
-        $subjectId = $teacher->subject_id;
+
+        // Pobierz klasę, do której należy nauczyciel
         $classroom = $teacher->classrooms()->where('classrooms.id', $id)->first();
-        $students = $classroom->students->load('grades');
-        $students->load([
-            'grades' => function ($query) use ($subjectId) {
-                $query->where('subject_id', $subjectId);
-            }
-        ]);
+
+        if (!$classroom) {
+            return redirect()->route('classes.index')->with('error', 'Nie znaleziono klasy.');
+        }
+
+        // Pobierz uczniów z ich ocenami dla danego przedmiotu, doładowując relację "subject"
+        $students = $classroom->students()
+            ->with([
+                'grades' => function ($query) use ($subjectId) {
+                    $query->where('subject_id', $subjectId)->with(['subject', 'teacher']);
+                }
+            ])
+            ->get();
 
         return view('classes.show', compact('classroom', 'students'));
-
     }
+
+
 
     /**
      * Show the form for editing the specified resource.

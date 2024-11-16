@@ -20,7 +20,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'role:teacher'])->group(function () {
+    Route::get('/classes/{class}/subject/{subjectId}', [ClassroomsController::class, 'show'])->name('classes.show_with_subject');
     Route::resource('classes', ClassroomsController::class);
+    
 });
 
 Route::middleware(['auth', 'role:student'])->group(function () {

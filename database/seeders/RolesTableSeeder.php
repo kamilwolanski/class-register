@@ -17,7 +17,7 @@ class RolesTableSeeder extends Seeder
     {
         // Dodajemy role do tabeli 'roles'
         Role::firstOrCreate(['name' => 'student'], ['name' => 'student']);
-        Role::firstOrCreate(['name' => 'teacher'], ['name' => 'student']);
+        Role::firstOrCreate(['name' => 'teacher'], ['name' => 'teacher']);
         Role::firstOrCreate(['name' => 'admin'], ['name' => 'admin']);
     }
 }
