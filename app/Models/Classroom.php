@@ -24,12 +24,12 @@ class Classroom extends Model
 
     public function teachers()
     {
-        return $this->belongsToMany(Teacher::class, 'teacher_classroom');
+        return $this->belongsToMany(Teacher::class, 'teacher_classrooms');
     }
 
     public function subjects()
     {
-        return $this->belongsToMany(Subject::class, 'teacher_classroom');
+        return $this->belongsToMany(Subject::class, 'teacher_classrooms');
     }
 
 }

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class TeacherClassroom extends Model
 {
     use HasFactory;
-
     // Relacja: Kombinacja nauczyciela, przedmiotu i klasy może mieć wiele planów lekcji
     public function schedules()
     {

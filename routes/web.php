@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GradesController;
 use App\Http\Controllers\ClassroomsController;
+use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -28,6 +29,8 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
 Route::middleware(['auth', 'role:student'])->group(function () {
     Route::resource('grades', GradesController::class);
 });
+
+Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule.index');
 
 
 require __DIR__ . '/auth.php';
