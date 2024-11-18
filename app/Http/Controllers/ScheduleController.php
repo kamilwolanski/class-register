@@ -19,15 +19,38 @@ class ScheduleController extends Controller
             $schedules = $teacherClassrooms->flatMap(function ($teacherClassroom) {
                 return $teacherClassroom->schedules;
             });
-            return view('schedule.index', ['schedules' => $schedules]);
+            $schedulesGrouped = $schedules->groupBy('day_of_week');
+            $hours = $schedules->pluck('hour')->unique()->sort();
+
+
+            return view('schedule.index', [
+                'schedulesGrouped' => $schedulesGrouped,
+                'hours' => $hours,
+                'role' => $role,
+            ]);
 
         } else if ($role === 'teacher') {
+            $user = auth()->user();
             $teacher = $user->teacher;
             $teacherClassrooms = $teacher->teacherClassrooms;
+
+            // Pobranie i zorganizowanie planu lekcji
             $schedules = $teacherClassrooms->flatMap(function ($teacherClassroom) {
                 return $teacherClassroom->schedules;
             });
-            return view('schedule.index', ['schedules' => $schedules]);
+
+            // Grupowanie po dniach tygodnia
+            $schedulesGrouped = $schedules->groupBy('day_of_week');
+
+            // Przygotowanie unikalnych godzin lekcyjnych
+            $hours = $schedules->pluck('hour')->unique()->sort();
+
+            // Przekazanie danych do widoku
+            return view('schedule.index', [
+                'schedulesGrouped' => $schedulesGrouped,
+                'hours' => $hours,
+                'role' => $role,
+            ]);
 
         }
 
