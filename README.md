@@ -1,66 +1,56 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Instrukcja uruchomienia projektu
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 1. Pobranie i instalacja XAMPP
 
-## About Laravel
+Aby rozpocząć, pobierz i zainstaluj XAMPP z oficjalnej strony:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- [Pobierz XAMPP](https://www.apachefriends.org/pl/index.html)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 2. Uruchomienie Apache i MySQL w XAMPP
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Po zainstalowaniu XAMPP, uruchom program i włącz serwery **Apache** oraz **MySQL**. Kliknij "Start" obok obu serwerów, aby je uruchomić.
 
-## Learning Laravel
+## 3. Instalacja paczek npm
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Zainstaluj Node.js, który zawiera menedżera paczek npm. Pobierz go z poniższego linku:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- [Pobierz Node.js](https://nodejs.org/)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Po zainstalowaniu Node.js, przejdź do katalogu projektu w terminalu i zainstaluj zależności:
 
-## Laravel Sponsors
+- Uruchom komendę: `npm install`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 4. Instalacja zależności Composera
 
-### Premium Partners
+Aby zainstalować zależności PHP, musisz mieć zainstalowanego Composera. Pobierz go z poniższego linku:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- [Pobierz Composer](https://getcomposer.org/)
 
-## Contributing
+Po zainstalowaniu Composera, uruchom poniższą komendę w terminalu w katalogu projektu:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Uruchom komendę: `composer install`
 
-## Code of Conduct
+## 5. Uruchomienie migracji bazy danych
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Aby utworzyć strukturę bazy danych, uruchom migracje:
 
-## Security Vulnerabilities
+- Uruchom komendę: `php artisan migrate`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 6. Seedowanie bazy danych
 
-## License
+Aby zapełnić bazę danych przykładowymi danymi, uruchom poniższą komendę:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Uruchom komendę: `php artisan db:seed`
+
+## 7. Uruchomienie serwera developerskiego
+
+Na koniec, uruchom serwer developerski:
+
+1. Uruchom serwer frontendowy za pomocą npm:
+
+- Uruchom komendę: `npm run dev`
+
+2. Uruchom serwer PHP:
+
+- Uruchom komendę: `php artisan serve`
+
