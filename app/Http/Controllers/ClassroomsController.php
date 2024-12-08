@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class ClassroomsController extends Controller
@@ -56,6 +57,8 @@ class ClassroomsController extends Controller
      */
     public function show(string $id, string $subjectId)
     {
+        $id_klasy = $id;
+        $id_przedmiotu = $subjectId;
         $user = auth()->user();
 
         // Pobieranie nauczyciela wraz z relacjami
@@ -77,7 +80,11 @@ class ClassroomsController extends Controller
             ])
             ->get();
 
-        return view('classes.show', compact('classroom', 'students'));
+        //pobieramy pogrupowane przedmioty
+        $subjects = 5;//Subject::all();
+        $student = Subject::all();
+
+        return view('classes.show', compact('classroom', 'students', 'id_klasy', 'id_przedmiotu', 'subjects'));
     }
 
 
