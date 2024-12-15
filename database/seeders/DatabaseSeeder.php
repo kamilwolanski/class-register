@@ -115,14 +115,14 @@ class DatabaseSeeder extends Seeder
     private function createStudentsAndGrades($users, $classrooms, $teachers, $subjects)
     {
         // Student 1A
-        $student1 = Student::firstOrCreate(['user_id' => $users['jakub@example.com']->id], ['name' => $users['jakub@example.com']->name, 'surname' => 'Abramowicz', 'classroom_id' => $classrooms['1A']->id]);
-        Grade::firstOrCreate(['student_id' => $student1->id, 'teacher_id' => $teachers['marek']->id, 'subject_id' => $subjects[0]->id], ['grade' => 4]);
-        Grade::firstOrCreate(['student_id' => $student1->id, 'teacher_id' => $teachers['mariusz']->id, 'subject_id' => $subjects[1]->id], ['grade' => 2]);
+    $student1 = Student::firstOrCreate(['user_id' => $users['jakub@example.com']->id], ['name' => $users['jakub@example.com']->name, 'surname' => 'Abramowicz', 'classroom_id' => $classrooms['1A']->id]);
+    Grade::firstOrCreate(['student_id' => $student1->id, 'teacher_id' => $teachers['marek']->id, 'subject_id' => $subjects[0]->id], ['grade' => 4, 'reason' => 'Kartkówka']);
+    Grade::firstOrCreate(['student_id' => $student1->id, 'teacher_id' => $teachers['mariusz']->id, 'subject_id' => $subjects[1]->id], ['grade' => 2, 'reason' => 'Sprawdzian']);
 
-        // Student 2A
-        $student2 = Student::firstOrCreate(['user_id' => $users['tomek@example.com']->id], ['name' => $users['tomek@example.com']->name, 'surname' => 'Abramowicz', 'classroom_id' => $classrooms['2A']->id]);
-        Grade::firstOrCreate(['student_id' => $student2->id, 'teacher_id' => $teachers['mariusz']->id, 'subject_id' => $subjects[1]->id], ['grade' => 3]);
-        Grade::firstOrCreate(['student_id' => $student2->id, 'teacher_id' => $teachers['marek']->id, 'subject_id' => $subjects[0]->id], ['grade' => 5]);
+    // Student 2A
+    $student2 = Student::firstOrCreate(['user_id' => $users['tomek@example.com']->id], ['name' => $users['tomek@example.com']->name, 'surname' => 'Abramowicz', 'classroom_id' => $classrooms['2A']->id]);
+    Grade::firstOrCreate(['student_id' => $student2->id, 'teacher_id' => $teachers['mariusz']->id, 'subject_id' => $subjects[1]->id], ['grade' => 3, 'reason' => 'Kartkówka']);
+    Grade::firstOrCreate(['student_id' => $student2->id, 'teacher_id' => $teachers['marek']->id, 'subject_id' => $subjects[0]->id], ['grade' => 5, 'reason' => 'Sprawdzian']);
     }
 
     private function createAdmin()

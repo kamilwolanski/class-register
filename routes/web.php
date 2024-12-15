@@ -34,7 +34,13 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule.index');
 
 
-Route::get('grades/{class}/subject/{subjectId}/userid/{userId}', [YourGradesController::class, 'show'])->name('grades.show');
+Route::get('grades/{class}/subject/{subjectId}/studentid/{studentId}', [YourGradesController::class, 'show'])->name('grades.show');
+
+Route::put('/grades/{grade}', [YourGradesController::class, 'update'])->name('grades.update');
+
+Route::post('/grades', [YourGradesController::class, 'store'])->name('grades.store');
+
+Route::delete('/grades/{grade}', [YourGradesController::class, 'destroy'])->name('grades.destroy');
 
 
 require __DIR__ . '/auth.php';
