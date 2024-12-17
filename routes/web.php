@@ -5,6 +5,7 @@ use App\Http\Controllers\GradesController;
 use App\Http\Controllers\ClassroomsController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\YourGradesController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,6 +25,11 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:teacher'])->group(function () {
     Route::get('/classes/{class}/subject/{subjectId}', [ClassroomsController::class, 'show'])->name('classes.show_with_subject');
     Route::resource('classes', ClassroomsController::class);
+    
+});
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/users', [UsersController::class, 'show'])->name('users.index');
+    Route::resource('users', UsersController::class);
     
 });
 
