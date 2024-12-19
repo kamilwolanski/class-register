@@ -37,15 +37,15 @@
                 <!-- Przycisk do otwarcia modala -->
                 <button 
                     class="text-blue-500 hover:text-blue-700 mx-2" 
-                    onclick="openModal({{ $grade->id }}, {{ $grade->grade }})">
+                    onclick="openModal({{ $user->id }})">
                     <i class="fa fa-pencil-alt"></i>
                 </button>
 
                 <!-- Formularz usuwania -->
-                <form action="{{ route('grades.destroy', ['grade' => $grade->id]) }}" method="POST" class="inline-block ml-2">
+                <form action="{{ route('grades.destroy', ['user' => $guser->id]) }}" method="POST" class="inline-block ml-2">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="text-red-500 hover:text-red-700 mx-2" onclick="return confirm('Czy na pewno chcesz usunąć tę ocenę?')">
+                    <button type="submit" class="text-red-500 hover:text-red-700 mx-2" onclick="return confirm('Czy na pewno chcesz usunąć tgo użytkownika?')">
                         <i class="fa fa-trash"></i>
                     </button>
                  </form>

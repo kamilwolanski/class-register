@@ -27,11 +27,6 @@ Route::middleware(['auth', 'role:teacher'])->group(function () {
     Route::resource('classes', ClassroomsController::class);
     
 });
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/users', [UsersController::class, 'show'])->name('users.index');
-    Route::resource('users', UsersController::class);
-    
-});
 
 Route::middleware(['auth', 'role:student'])->group(function () {
     Route::resource('grades', GradesController::class);
@@ -48,5 +43,13 @@ Route::post('/grades', [YourGradesController::class, 'store'])->name('grades.sto
 
 Route::delete('/grades/{grade}', [YourGradesController::class, 'destroy'])->name('grades.destroy');
 
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/users', [UsersController::class, 'show'])->name('users.index');
+});
+Route::delete('/users/{id}', [UsersController::class, 'destroy'])->name('users.destroy');
+Route::get('/users/{id}/edit', [UsersController::class, 'edit'])->name('users.edit');
+Route::patch('/users/{id}', [UsersController::class, 'update'])->name('users.update');
+Route::post('/users', [UsersController::class, 'store'])->name('users.store');
 
 require __DIR__ . '/auth.php';
