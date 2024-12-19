@@ -58,6 +58,7 @@ class StudentsTableSeeder extends Seeder
             'teacher_id' => $teacher->id,
             'subject_id' => $subject->id,
             'grade' => 4,
+            'reason' => 'Kartkówka',
         ]);
     }
 }

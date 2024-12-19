@@ -5,6 +5,7 @@ use App\Http\Controllers\GradesController;
 use App\Http\Controllers\ClassroomsController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\YourGradesController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -34,7 +35,21 @@ Route::middleware(['auth', 'role:student'])->group(function () {
 Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule.index');
 
 
-Route::get('grades/{class}/subject/{subjectId}/userid/{userId}', [YourGradesController::class, 'show'])->name('grades.show');
+Route::get('grades/{class}/subject/{subjectId}/studentid/{studentId}', [YourGradesController::class, 'show'])->name('grades.show');
 
+Route::put('/grades/{grade}', [YourGradesController::class, 'update'])->name('grades.update');
+
+Route::post('/grades', [YourGradesController::class, 'store'])->name('grades.store');
+
+Route::delete('/grades/{grade}', [YourGradesController::class, 'destroy'])->name('grades.destroy');
+
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/users', [UsersController::class, 'show'])->name('users.index');
+});
+Route::delete('/users/{id}', [UsersController::class, 'destroy'])->name('users.destroy');
+Route::get('/users/{id}/edit', [UsersController::class, 'edit'])->name('users.edit');
+Route::patch('/users/{id}', [UsersController::class, 'update'])->name('users.update');
+Route::post('/users', [UsersController::class, 'store'])->name('users.store');
 
 require __DIR__ . '/auth.php';

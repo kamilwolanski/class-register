@@ -80,9 +80,10 @@ class ClassroomsController extends Controller
             ])
             ->get();
 
+        
         //pobieramy pogrupowane przedmioty
-        $subjects = 5;//Subject::all();
-        $student = Subject::all();
+        $subjects = Subject::all();
+        //$student = Subject::all();
 
         return view('classes.show', compact('classroom', 'students', 'id_klasy', 'id_przedmiotu', 'subjects'));
     }
