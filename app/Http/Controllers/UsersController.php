@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Grade;
 use App\Models\User;
+use App\Models\Classroom;
+use App\Models\Student;
+use App\Models\Subject;
+use App\Models\Teacher;
+use App\Models\TeacherClassroom;
 use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
@@ -16,6 +21,8 @@ class UsersController extends Controller
             $userId = $request->get('id');
             // Pobierz wszystkich użytkowników (ID i imiona)
             $allUsers = User::select('id', 'name')->get();
+            $classrooms = Classroom::all();
+            $subjects = Subject::all();
 
             // Pobierz użytkowników z opcjonalnym filtrowaniem
             $users = User::when($role, function ($query, $role) {
@@ -29,7 +36,7 @@ class UsersController extends Controller
             ->get();
 
             // Przekaż dane do widoku
-            return view('users.index', compact('users', 'role', 'userId', 'allUsers'));
+            return view('users.index', compact('users', 'role', 'userId', 'allUsers', 'classrooms', 'subjects'));
         }
 
         public function destroy($id)
@@ -37,12 +44,13 @@ class UsersController extends Controller
             $user = User::findOrFail($id);
 
             if ($user->role->name === 'admin') {
-                return response()->json(['message' => 'Nie można usunać użytkownika o takiej roli'], 403);
+                session()->flash('error', 'Nie można usunąć użytkownika z uprawnieniami Admina.');
+                return redirect()->back();
             }
 
             $user->delete();
 
-            return response()->json(['message' => 'Użytkownik został usunięty']);
+            return redirect()->back();
         }
         public function edit($id)
         {
@@ -70,7 +78,9 @@ class UsersController extends Controller
 
         public function store(Request $request)
         {
-            // Walidacja danych wejściowych
+            //dd($request);
+                //DODANIE ADMINA
+                // Walidacja danych wejściowych
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
@@ -87,12 +97,15 @@ class UsersController extends Controller
                     },
                 ],
             ]);
+
+
+            
     
-            if ($validator->fails()) {
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
+                if ($validator->fails()) {
+                    return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+                }
     
                 //dd($request->input('role_id'));
                 $user = User::create([
@@ -101,8 +114,47 @@ class UsersController extends Controller
                     'role_id' => $request->input('role_id'),
                     'password' => bcrypt($request->input('password')),
                 ]);
-    
+                $newUserId = $user->id;
 
-        }
+                if($request->input('role_id')==1){
+                    //DODANIE STUDENTA
+                    $student = Student::create([
+                        'name' => $request->input('name'),
+                        'surname' => $request->input('surname'),
+                        'user_id' => $newUserId,
+                        'classroom_id' => $request->input('classroom'),
+                    ]);
+    
+    
+    
+                }
+    
+    
+                
+    
+                if($request->input('role_id')==2){
+                    //DODANIE NAUCZYCIELA
+                    $teacher = Teacher::create([
+                        'name' => $request->input('name'),
+                        'surname' => $request->input('surname'),
+                        'user_id' => $newUserId,
+                    ]);
+
+                    $newTeacherId = $teacher->id;
+                    $teacherClassrom = TeacherClassroom::create([
+                        'teacher_id' => $newTeacherId,
+                        'subject_id' => $request->input('subject'),
+                        'classroom_id' => $request->input('classroom'),
+                    ]);
+    
+    
+    
+    
+                }
+
+                return redirect()->route('users.index')->with('success', 'Użytkownik został dodany');
+            }
+
+        
 
 }

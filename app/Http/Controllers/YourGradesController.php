@@ -33,26 +33,39 @@ class YourGradesController extends Controller
         }
     ])
     ->get();
-        return view('grades.create', compact('id', 'subjectId', 'student'));
+        return view('classes.create', compact('id', 'subjectId', 'student'));
     }
 
 
-    public function update(Request $request, Grade $grade)
+    public function update(Request $request, $gradeId)
     {
+        //dd($gradeId);
+        // Walidacja danych
         $request->validate([
-            'new_grade' => 'required|numeric|min:1|max:6', // Dostosuj do zakresu ocen
+            'new_grade' => 'required|numeric|min:1|max:6',
         ]);
 
-        $grade->update([
-            'grade' => $request->new_grade,
-        ]);
+        // Znalezienie oceny po gradeId
+        $grade = Grade::find($gradeId);
+        //dd($grade);
+        // Jeśli ocena nie istnieje
+        if (!$grade) {
+            return redirect()->back()->with('error', 'Ocena nie została znaleziona.');
+        }
 
+        // Zaktualizowanie oceny
+        $grade->grade = $request->input('new_grade');
+        $grade->save();
+
+        // Powrót do poprzedniej strony z sukcesem
         return redirect()->back()->with('success', 'Ocena została zaktualizowana.');
     }
 
     public function store(Request $request)
+
     {
-       // dd($request);
+
+        //dd($request);
         $request->validate([
             'grade' => 'required|numeric|min:1|max:6', // Dostosuj do zakresu ocen
             'subject_id' => 'required|exists:subjects,id', // Upewnij się, że id przedmiotu jest prawidłowe
@@ -63,7 +76,7 @@ class YourGradesController extends Controller
         $grade->grade = $request->grade;
         $grade->subject_id = $request->subject_id;
         $grade->student_id = $request->student_id; // Załóżmy, że student_id jest przesyłane w formularzu
-        $grade->teacher_id = $user->id;
+        $grade->teacher_id = $user->teacher->id;
         $grade->reason = $request->reason;
         $grade->save();
         

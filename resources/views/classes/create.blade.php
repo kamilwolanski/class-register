@@ -34,15 +34,15 @@
             {{ $grade->reason }}
         </td>
         <td class="px-4 py-2 border border-gray-300">
-                <!-- Przycisk do otwarcia modala -->
+                <!-- EDYTUJ-->
                 <button 
                     class="text-blue-500 hover:text-blue-700 mx-2" 
-                    onclick="openModal({{ $user->id }})">
+                    onclick="openModal({{ $grade->id }}, '{{ $grade->grade }}')">
                     <i class="fa fa-pencil-alt"></i>
                 </button>
 
-                <!-- Formularz usuwania -->
-                <form action="{{ route('grades.destroy', ['user' => $guser->id]) }}" method="POST" class="inline-block ml-2">
+                <!-- USUŃ -->
+                <form action="{{ route('classes.destroy', ['grade' => $grade->id]) }}" method="POST" class="inline-block ml-2">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="text-red-500 hover:text-red-700 mx-2" onclick="return confirm('Czy na pewno chcesz usunąć tgo użytkownika?')">
@@ -50,7 +50,7 @@
                     </button>
                  </form>
 
-                <!-- Ikona Rozwiń -->
+                <!-- ROZWIŃ -->
                 <button 
                     class="text-blue-500 hover:text-blue-700 mx-2" 
                     onclick="toggleDetails({{ $grade->id }})">
@@ -73,7 +73,7 @@
     <button class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                                 onclick="openAddGradeModal()">Dodaj ocenę</button>
 </div>
-                    <a href="{{ route('classes.show_with_subject', ['class' => $id, 'subjectId' => $subjectId]) }}" class="block mt-4 text-blue-500">Wróć do listy klas</a>
+                    <a href="{{ route('classes.show_with_subject', ['class' => $id, 'subjectId' => $subjectId]) }}" class="block mt-4 text-blue-500">Wróć do dziennika</a>
                 </div>
             </div>
         </div>
@@ -86,7 +86,7 @@
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
                 <h3 class="text-lg font-semibold mb-4">Edytuj ocenę</h3>
-                <form id="edit-form" method="POST">
+                <form id="edit-form" method="POST" action="{{ route('classes.update', ['grade' => ':gradeId']) }}">
                     @csrf
                     @method('PUT')
                     <div class="mb-4">
@@ -130,7 +130,7 @@
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
                 <h3 class="text-lg font-semibold mb-4">Dodaj ocenę</h3>
-                <form id="add-form" method="POST" action="{{ route('grades.store') }}">
+                <form id="add-form" method="POST" action="{{ route('classes.store') }}">
                     @csrf
                     <!-- Pole dla student_id -->
                     <input type="hidden" name="student_id" value="{{ $student->first()->id }}">
@@ -175,17 +175,20 @@
             </div>
         </div>
     </div>
+
 </x-app-layout>
 
 <script>
-    // Funkcja do otwarcia modalu edytowania oceny
     function openModal(gradeId, oldGrade) {
-        document.getElementById('old-grade').value = oldGrade;
-        const form = document.getElementById('edit-form');
-        form.action = `/grades/${gradeId}`;
-        document.getElementById('edit-modal').classList.remove('hidden');
-        
-    }
+    document.getElementById('old-grade').value = oldGrade;
+    
+    // Generowanie URL z pomocą routy Blade i JS
+    const route = "{{ route('classes.update', ':gradeId') }}";
+    const form = document.getElementById('edit-form');
+    form.action = route.replace(':gradeId', gradeId);
+    
+    document.getElementById('edit-modal').classList.remove('hidden');
+}
 
     // Funkcja do zamknięcia modalu edytowania
     function closeModal() {

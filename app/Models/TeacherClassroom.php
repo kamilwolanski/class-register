@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class TeacherClassroom extends Model
 {
     use HasFactory;
+    protected $fillable = ['teacher_id', 'subject_id', 'classroom_id'];
+
     // Relacja: Kombinacja nauczyciela, przedmiotu i klasy może mieć wiele planów lekcji
     public function schedules()
     {

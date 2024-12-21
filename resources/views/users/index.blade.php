@@ -151,25 +151,74 @@
             <form id="add-user-form" method="POST" action="{{ route('users.store') }}">
                 @csrf
                 <div class="mb-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700">Imię</label>
-                    <input type="text" id="name" name="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" required />
-                </div>
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" required />
-                </div>
-                <div class="mb-4">
-                    <label for="password" class="block text-sm font-medium text-gray-700">Hasło</label>
-                    <input type="password" id="password" name="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" required />
-                </div>
-                <div class="mb-4">
                     <label for="role" class="block text-sm font-medium text-gray-700">Rola</label>
-                    <select id="role" name="role_id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
-                        <option value="3">Admin</option>
+                    <select id="role" onchange="changeRole((this.value))" name="role_id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="3"selected>Admin</option>
                         <option value="1">Student</option>
                         <option value="2">Nauczyciel</option>
                     </select>
                 </div>
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Imię</label>
+                        <input type="text" id="name" name="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div id="studentAndTeacher_value_surname" class=" hidden">
+                    <!-- div dla studenta i nauczyciela-->
+                    <div class="mb-4">
+                        <label for="surname" class="block text-sm font-medium text-gray-700">Nazwisko</label>
+                        <input type="text" id="surname" name="surname" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="email" name="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div id="studentAndTeacher_value_classroom" class=" hidden">
+                    <!-- div dla studenta i nauczyciela-->
+                    <div class="mb-4">
+                        <label for="classroom" class="block text-sm font-medium text-gray-700">Klasa</label>
+                        <select id="classroom" name="classroom" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+
+                        @foreach($classrooms as $classroom)
+                        <option value="{{ $classroom->id }}">{{ $classroom->name }}</option>
+                        @endforeach
+                        </select>
+                    </div>
+
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="block text-sm font-medium text-gray-700">Hasło</label>
+                        <input type="password" id="password" name="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+
+
+
+                    <div id="teacher_value_subjects" class=" hidden">
+                        <!-- div dla nauczyciela-->
+                        <div class="mb-4">
+                            <label for="subject" class="block text-sm font-medium text-gray-700">Przedmiot</label>
+                            <select id="subject" name="subject" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+
+                            @foreach($subjects as $subject)
+                            <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <div class="flex justify-end">
                     <button type="button" onclick="closeAddModal()" class="bg-gray-500 text-white px-4 py-2 rounded-md mr-2">Anuluj</button>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Dodaj</button>
@@ -208,6 +257,20 @@
             </form>
         </div>
     </div>
+
+    @if (session('error'))
+            <!-- Error modal -->
+        <div id="error-modal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+                <div class="bg-white rounded-lg p-6 w-96">
+                    <h3 class="text-xl font-semibold mb-4">Nie można usunąć użytkownika z uprawnieniami Admina.</h3>
+                        <div class="flex justify-end">
+                            <button type="button" onclick="closeErrorModal()" class="bg-gray-500 text-white px-4 py-2 rounded-md mr-2">Zamknij</button>
+                        </div>
+                </div>
+            </div>
+        @endif
+
+
     <script>
 // Funkcja do otwarcia modalu edytowania użytkownika
     function openModal(userId) {
@@ -215,6 +278,33 @@
         form.action = `/users/${userId}`;
         document.getElementById('edit-modal').classList.remove('hidden');
         
+    }
+    //Funkcja do wyświetlania indywidualnych pól dla wybrnej roli
+    function changeRole(selectedRole) {
+        console.log('wchodzi');
+        // Możesz teraz dodać logikę, która będzie działać w zależności od roli
+        if (selectedRole == 1) {
+            //student
+            document.getElementById('studentAndTeacher_value_surname').classList.remove('hidden');
+            document.getElementById('studentAndTeacher_value_classroom').classList.remove('hidden');
+            document.getElementById('teacher_value_subjects').classList.add('hidden');
+            document.getElementById('default_values').classList.add('hidden');
+            
+        } else if (selectedRole == 2) {
+            //teacher
+            document.getElementById('teacher_value_subjects').classList.remove('hidden');
+            document.getElementById('studentAndTeacher_value_surname').classList.remove('hidden');
+            document.getElementById('studentAndTeacher_value_classroom').classList.remove('hidden');
+            document.getElementById('default_values').classList.add('hidden');
+            
+        } else if (selectedRole == 3) {
+            //admin
+            document.getElementById('teacher_value_subjects').classList.add('hidden');
+            document.getElementById('studentAndTeacher_value_surname').classList.add('hidden');
+            document.getElementById('studentAndTeacher_value_classroom').classList.add('hidden');
+            document.getElementById('default_values').classList.remove('hidden');
+            
+        }
     }
 
     // Funkcja do zamknięcia modalu edytowania
