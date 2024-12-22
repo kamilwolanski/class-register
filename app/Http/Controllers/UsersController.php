@@ -23,7 +23,6 @@ class UsersController extends Controller
             $allUsers = User::select('id', 'name')->get();
             $classrooms = Classroom::all();
             $subjects = Subject::all();
-
             // Pobierz użytkowników z opcjonalnym filtrowaniem
             $users = User::when($role, function ($query, $role) {
                 return $query->whereHas('role', function ($q) use ($role) {
@@ -34,22 +33,17 @@ class UsersController extends Controller
                 return $query->where('id', $userId);  // Filtruj użytkowników na podstawie ID, jeśli podano
             })
             ->get();
-
             // Przekaż dane do widoku
             return view('users.index', compact('users', 'role', 'userId', 'allUsers', 'classrooms', 'subjects'));
         }
-
         public function destroy($id)
         {
             $user = User::findOrFail($id);
-
             if ($user->role->name === 'admin') {
                 session()->flash('error', 'Nie można usunąć użytkownika z uprawnieniami Admina.');
                 return redirect()->back();
             }
-
             $user->delete();
-
             return redirect()->back();
         }
         public function edit($id)
@@ -57,28 +51,19 @@ class UsersController extends Controller
             $user = User::findOrFail($id);
             return view('users.edit', compact('user'));
         }
-
         public function update(Request $request, $id)
         {
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255|unique:users,email,'.$id,
-                'role' => 'required|string|max:20',
-            ]);
-
+                'role_id' => 'required',
+            ]);         
             $user = User::findOrFail($id);
             $user->update($validatedData);
-
             return redirect()->route('users.index')->with('success', 'Użytkownik został zaktualizowany');
         }
-
-
-
-
-
         public function store(Request $request)
         {
-            //dd($request);
                 //DODANIE ADMINA
                 // Walidacja danych wejściowych
             $validator = Validator::make($request->all(), [
@@ -97,17 +82,11 @@ class UsersController extends Controller
                     },
                 ],
             ]);
-
-
-            
-    
                 if ($validator->fails()) {
                     return redirect()->back()
                         ->withErrors($validator)
                         ->withInput();
                 }
-    
-                //dd($request->input('role_id'));
                 $user = User::create([
                     'name' => $request->input('name'),
                     'email' => $request->input('email'),
@@ -117,21 +96,13 @@ class UsersController extends Controller
                 $newUserId = $user->id;
 
                 if($request->input('role_id')==1){
-                    //DODANIE STUDENTA
                     $student = Student::create([
                         'name' => $request->input('name'),
                         'surname' => $request->input('surname'),
                         'user_id' => $newUserId,
                         'classroom_id' => $request->input('classroom'),
                     ]);
-    
-    
-    
                 }
-    
-    
-                
-    
                 if($request->input('role_id')==2){
                     //DODANIE NAUCZYCIELA
                     $teacher = Teacher::create([
@@ -139,22 +110,13 @@ class UsersController extends Controller
                         'surname' => $request->input('surname'),
                         'user_id' => $newUserId,
                     ]);
-
                     $newTeacherId = $teacher->id;
                     $teacherClassrom = TeacherClassroom::create([
                         'teacher_id' => $newTeacherId,
                         'subject_id' => $request->input('subject'),
                         'classroom_id' => $request->input('classroom'),
-                    ]);
-    
-    
-    
-    
+                    ]);  
                 }
-
                 return redirect()->route('users.index')->with('success', 'Użytkownik został dodany');
             }
-
-        
-
 }

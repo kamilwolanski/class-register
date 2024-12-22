@@ -90,8 +90,8 @@
                                         Edytowano: {{ $user->updated_at }}                    
                                         @endif
                                     </td>
-                                    <td class="px-4 py-2 border border-gray-300 text-center w-1/5">f</td>
-                                    <td class="px-4 py-2 border border-gray-300 text-center w-1/5">f</td>
+                                    <td class="px-4 py-2 border border-gray-300 text-center w-1/5"></td>
+                                    <td class="px-4 py-2 border border-gray-300 text-center w-1/5"></td>
                                     <td class="px-4 py-2 border border-gray-300 text-center w-1/5">
                                     <button 
                                         class="text-blue-500 hover:text-blue-700 mx-2" 
@@ -146,8 +146,8 @@
 
 <!-- Modal do dodawania użytkownika -->
 <div id="add-user-modal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
-        <div class="bg-white rounded-lg p-6 w-96">
-            <h3 class="text-xl font-semibold mb-4">Dodaj użytkownika</h3>
+    <div class="bg-white rounded-lg p-6 w-96">
+        <h3 class="text-xl font-semibold mb-4">Dodaj użytkownika</h3>
             <form id="add-user-form" method="POST" action="{{ route('users.store') }}">
                 @csrf
                 <div class="mb-4">
@@ -185,15 +185,11 @@
                         @endforeach
                         </select>
                     </div>
-
                     </div>
                     <div class="mb-4">
                         <label for="password" class="block text-sm font-medium text-gray-700">Hasło</label>
                         <input type="password" id="password" name="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
                     </div>
-
-
-
                     <div id="teacher_value_subjects" class=" hidden">
                         <!-- div dla nauczyciela-->
                         <div class="mb-4">
@@ -206,19 +202,6 @@
                             </select>
                         </div>
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
                 <div class="flex justify-end">
                     <button type="button" onclick="closeAddModal()" class="bg-gray-500 text-white px-4 py-2 rounded-md mr-2">Anuluj</button>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Dodaj</button>
@@ -275,7 +258,7 @@
 // Funkcja do otwarcia modalu edytowania użytkownika
     function openModal(userId) {
         const form = document.getElementById('edit-form');
-        form.action = `/users/${userId}`;
+        form.action = `/users/update/${userId}`;
         document.getElementById('edit-modal').classList.remove('hidden');
         
     }
@@ -311,17 +294,10 @@
     function closeModal() {
         document.getElementById('edit-modal').classList.add('hidden');
     }
-
-
     //zamknięcie error modal
     function closeErrorModal() {
         document.getElementById('error-modal').classList.add('hidden');
     }
-
-
-
-
-
     // Funkcja do otwarcia modalu dodawania nowego użytkownika
     function openAddGradeModal() {
         document.getElementById('add-user-modal').classList.remove('hidden');
@@ -330,16 +306,11 @@
     // Funkcja do zamknięcia modalu dodawania
     function closeAddGradeModal() {
         document.getElementById('add-user-modal').classList.add('hidden');
-    }
-
-
-
-        
+    }       
         function resetIdFilter() {
             // Jeśli wybrano rolę, resetujemy filtr ID
             document.getElementById('id').value = '';
         }
-
         function resetRoleFilter() {
             // Jeśli wybrano użytkownika, resetujemy filtr roli
             document.getElementById('role').value = '';
@@ -355,7 +326,6 @@
         function openAddModal() {
             document.getElementById('add-user-modal').classList.remove('hidden');
         }
-
         function closeAddModal() {
             document.getElementById('add-user-modal').classList.add('hidden');
         }

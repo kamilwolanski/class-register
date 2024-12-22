@@ -9,71 +9,67 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                 <div class="container">
-                <h2>Imię i nazwisko:
+                    <h2>Imię i nazwisko:
                         {{ $student->first()->name }}    {{ $student->first()->surname }}  
-                </h2>
-                <h2>Przedmiot:
-                {{ $student->first()?->grades->first()?->subject->name ?? 'Nieznany przedmiot' }}  
-                </h2>
+                    </h2>
+                    <h2>Przedmiot:
+                        {{ $student->first()?->grades->first()?->subject->name ?? 'Nieznany przedmiot' }}  
+                    </h2>
 
-    <table class="min-w-full table-auto border-collapse border border-gray-300 text-sm">
-        <thead>
-            <tr class="bg-gray-100">
-                <th class="px-4 py-2 border border-gray-300 text-left">Oceny</th>
-                <th class="px-4 py-2 border border-gray-300 text-left">Rodzaj aktywności</th>
-                <th class="px-4 py-2 border border-gray-300 text-left">Edycja</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach($student->first()->grades as $grade)
-        <tr class="{{ $loop->odd ? 'bg-white' : 'bg-gray-50' }}">
-        <td class="px-4 py-2 border border-gray-300">
-        <span class="badge bg-blue-500 text-white py-1 px-3 rounded-full mr-2">{{ $grade->grade }}</span>
-        </td>
-        <td class="px-4 py-2 border border-gray-300">
-            {{ $grade->reason }}
-        </td>
-        <td class="px-4 py-2 border border-gray-300">
-                <!-- EDYTUJ-->
-                <button 
-                    class="text-blue-500 hover:text-blue-700 mx-2" 
-                    onclick="openModal({{ $grade->id }}, '{{ $grade->grade }}')">
-                    <i class="fa fa-pencil-alt"></i>
-                </button>
-
-                <!-- USUŃ -->
-                <form action="{{ route('classes.destroy', ['grade' => $grade->id]) }}" method="POST" class="inline-block ml-2">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="text-red-500 hover:text-red-700 mx-2" onclick="return confirm('Czy na pewno chcesz usunąć tgo użytkownika?')">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                 </form>
-
-                <!-- ROZWIŃ -->
-                <button 
-                    class="text-blue-500 hover:text-blue-700 mx-2" 
-                    onclick="toggleDetails({{ $grade->id }})">
-                    <i class="fa fa-chevron-down"></i>
-                </button>
-        </td>
-        </tr>
-        <!-- Ukryty wiersz z dodatkowymi informacjami -->
-        <tr id="details-{{ $grade->id }}" class="hidden bg-gray-100">
-                <td colspan="4" class="px-4 py-2 border border-gray-300">
-                    <strong>Data dodania:</strong> {{ $grade->created_at }} <br>
-                    <strong>Data edycji:</strong> {{ $grade->updated_at }}
-                </td>
-            </tr>
-         @endforeach
-        </tbody>
-    </table>
-
-    <!-- Przycisk do dodania nowej oceny -->
-    <button class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                                onclick="openAddGradeModal()">Dodaj ocenę</button>
-</div>
-                    <a href="{{ route('classes.show_with_subject', ['class' => $id, 'subjectId' => $subjectId]) }}" class="block mt-4 text-blue-500">Wróć do dziennika</a>
+                        <table class="min-w-full table-auto border-collapse border border-gray-300 text-sm">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="px-4 py-2 border border-gray-300 text-left">Oceny</th>
+                                    <th class="px-4 py-2 border border-gray-300 text-left">Rodzaj aktywności</th>
+                                    <th class="px-4 py-2 border border-gray-300 text-left">Edycja</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($student->first()->grades as $grade)
+                            <tr class="{{ $loop->odd ? 'bg-white' : 'bg-gray-50' }}">
+                                <td class="px-4 py-2 border border-gray-300">
+                                    <span class="badge bg-blue-500 text-white py-1 px-3 rounded-full mr-2">{{ $grade->grade }}</span>
+                                </td>
+                                <td class="px-4 py-2 border border-gray-300">
+                                    {{ $grade->reason }}
+                                </td>
+                                <td class="px-4 py-2 border border-gray-300">
+                                    <!-- EDYTUJ-->
+                                    <button 
+                                        class="text-blue-500 hover:text-blue-700 mx-2" 
+                                        onclick="openModal({{ $grade->id }}, '{{ $grade->grade }}')">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </button>
+                                    <!-- USUŃ -->
+                                    <form action="{{ route('classes.destroy', ['grade' => $grade->id]) }}" method="POST" class="inline-block ml-2">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-500 hover:text-red-700 mx-2" onclick="return confirm('Czy na pewno chcesz usunąć tgo użytkownika?')">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    <!-- ROZWIŃ -->
+                                    <button 
+                                        class="text-blue-500 hover:text-blue-700 mx-2" 
+                                        onclick="toggleDetails({{ $grade->id }})">
+                                        <i class="fa fa-chevron-down"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- Ukryty wiersz z dodatkowymi informacjami -->
+                            <tr id="details-{{ $grade->id }}" class="hidden bg-gray-100">
+                                <td colspan="4" class="px-4 py-2 border border-gray-300">
+                                    <strong>Data dodania:</strong> {{ $grade->created_at }} <br>
+                                    <strong>Data edycji:</strong> {{ $grade->updated_at }}
+                                </td>
+                            </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                        <!-- Przycisk do dodania nowej oceny -->
+                        <button class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600" onclick="openAddGradeModal()">Dodaj ocenę</button>
+                    </div>
+                <a href="{{ route('classes.show_with_subject', ['class' => $id, 'subjectId' => $subjectId]) }}" class="block mt-4 text-blue-500">Wróć do dziennika</a>
                 </div>
             </div>
         </div>
@@ -181,31 +177,23 @@
 <script>
     function openModal(gradeId, oldGrade) {
     document.getElementById('old-grade').value = oldGrade;
-    
-    // Generowanie URL z pomocą routy Blade i JS
     const route = "{{ route('classes.update', ':gradeId') }}";
     const form = document.getElementById('edit-form');
-    form.action = route.replace(':gradeId', gradeId);
-    
+    form.action = route.replace(':gradeId', gradeId);   
     document.getElementById('edit-modal').classList.remove('hidden');
-}
-
+    }
     // Funkcja do zamknięcia modalu edytowania
     function closeModal() {
         document.getElementById('edit-modal').classList.add('hidden');
     }
-
     // Funkcja do otwarcia modalu dodawania nowej oceny
     function openAddGradeModal() {
         document.getElementById('add-grade-modal').classList.remove('hidden');
     }
-
     // Funkcja do zamknięcia modalu dodawania
     function closeAddGradeModal() {
         document.getElementById('add-grade-modal').classList.add('hidden');
     }
-    
-
     function toggleDetails(gradeId) {
     var detailsRow = document.getElementById('details-' + gradeId);
     if (detailsRow.classList.contains('hidden')) {
