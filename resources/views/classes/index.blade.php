@@ -19,7 +19,7 @@
                                         <tr class="bg-gray-100">
                                             <th class="px-4 py-2 border border-gray-300 text-left">Nazwa klasy</th>
                                             <th class="px-4 py-2 border border-gray-300 text-left">Przedmiot</th>
-                                            <th class="px-4 py-2 border border-gray-300 text-left">Oceny</th>
+                                            <th class="px-4 py-2 border border-gray-300 text-left">Dziennik</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -31,7 +31,7 @@
                                                 <td class="px-4 py-2 border border-gray-300">
                                                     <a href="{{ route('classes.show_with_subject', ['class' => $entry['classroom']->id, 'subjectId' => $entry['subject']->id]) }}"
                                                         class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded shadow">
-                                                        Oceny
+                                                        Otwórz dziennik
                                                     </a>
                                                 </td>
                                             </tr>

@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900">
                     <div class="container">
                             <h2>Przedmiot:
-                                {{ $subject->name ?? 'Nieznany przedmiot' }}
+                                {{ $students->first()?->grades->first()?->subject->name ?? 'Nieznany przedmiot' }}
                             </h2>
 
                             @if($students->isEmpty())
@@ -44,7 +44,7 @@
                                                         @endif
                                                     </td>
                                                     <td class="px-4 py-2 border border-gray-300">
-                                                    <a href="{{ route('grades.show', ['class' => $id_klasy, 'subjectId' => $id_przedmiotu, 'userId' => $student->id]) }}" class="block mt-4 text-blue-500">Edytuj</a>
+                                                    <a href="{{ route('classes.show', ['class' => $id_klasy, 'subjectId' => $id_przedmiotu, 'studentId' => $student->id]) }}" class="block mt-4 text-blue-500">Edytuj</a>
                                                     </td>
 
                                                 </tr>
