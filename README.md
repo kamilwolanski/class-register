@@ -30,25 +30,19 @@ Po zainstalowaniu Composera, uruchom poniższą komendę w terminalu w katalogu 
 
 - Uruchom komendę: `composer install`
 
-## 5. Stworzenie bazy danych
-Stwórz nową bazę danych (http://localhost/phpmyadmin) o nazwie z pliku .env.example z pod `DB_DATABASE`
-
-## 6. Generowanie app key
-Skopiuj plik .env.example wklej go do projektu i zmień nazwę na .env. Następnie wygeneruj klucz komendą `php artisan key:generate`
-
-## 7. Uruchomienie migracji bazy danych
+## 5. Uruchomienie migracji bazy danych
 
 Aby utworzyć strukturę bazy danych, uruchom migracje:
 
-- Uruchom komendę: `php artisan migrate`
+- Uruchom komendę: `php artisan migrate` i wpisz 'yes' by utowrzyc baze danych 
 
-## 8. Seedowanie bazy danych
+## 6. Seedowanie bazy danych
 
 Aby zapełnić bazę danych przykładowymi danymi, uruchom poniższą komendę:
 
 - Uruchom komendę: `php artisan db:seed`
 
-## 9. Uruchomienie serwera developerskiego
+## 7. Uruchomienie serwera developerskiego
 
 Na koniec, uruchom serwer developerski:
 
