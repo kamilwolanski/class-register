@@ -66,7 +66,7 @@ class ClassroomsController extends Controller
 
         // Pobierz klasę, do której należy nauczyciel
         $classroom = $teacher->classrooms()->where('classrooms.id', $id)->first();
-
+        
         if (!$classroom) {
             return redirect()->route('classes.index')->with('error', 'Nie znaleziono klasy.');
         }

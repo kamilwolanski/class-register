@@ -6,10 +6,11 @@ use App\Http\Controllers\ClassroomsController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\YourGradesController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ManageController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
 });
 
 Route::get('/dashboard', function () {
@@ -44,6 +45,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/users/{id}/edit', [UsersController::class, 'edit'])->name('users.edit');
     Route::patch('/users/update/{id}', [UsersController::class, 'update'])->name('users.update');
     Route::post('/users', [UsersController::class, 'store'])->name('users.store');
+    Route::get('/manage', [ManageController::class, 'show'])->name('manage.index');
+    Route::post('/manage', [ManageController::class, 'store'])->name('manage.store');
+    Route::delete('/manage/{class}', [ManageController::class, 'destroy'])->name('manage.destroy');
+    Route::get('/class/{classroom}', [ManageController::class, 'showClass'])->name('class.index');
 });
 
 require __DIR__ . '/auth.php';
